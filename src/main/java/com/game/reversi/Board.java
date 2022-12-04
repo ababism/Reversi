@@ -79,13 +79,6 @@ public class Board {
         }
     }
 
-    void placeChipAt(int x, int y) throws IllegalArgumentException {
-        if (x >= BOARD_SIZE || x < 0 || y >= BOARD_SIZE || y < 0) {
-            throw new IllegalArgumentException("Wrong chip coordinates");
-        }
-
-        desk[x][y] = playerColor;
-    }
 
     // Good code
     private boolean checkCoordinates(int x, int y) {
@@ -116,9 +109,6 @@ public class Board {
     }
 
     private int CalculateValueOfDirection(int x, int y, int vX, int vY) {
-        //        if (!coordinateInRange(x) || !coordinateInRange(y)) {
-        //            return 0;
-        //        }
         // TODO проверка на норм вектор
         if (!checkCoordinates(x, y) || (vX == 0 && vY == 0) || desk[x][y] != null) {
             return 0;
@@ -140,6 +130,39 @@ public class Board {
         }
     }
 
+    private void flipChipsInDirection(int x, int y, int vX, int vY) {
+        // TODO проверка на норм вектор
+        if (!checkCoordinates(x, y) || (vX == 0 && vY == 0) || desk[x][y] != null) {
+            return;
+        }
+        int chipCount = 0;
+        x += vX;
+        y += vY;
+        var copyOfX = x;
+        var copyOfY = y;
+        while (x > 0 && y > 0 && x < BOARD_SIZE - 2 && y < BOARD_SIZE - 2 && desk[x][y] == opponentsColour) {
+            x += vX;
+            y += vY;
+            ++chipCount;
+        }
+        if (x >= 0 && y >= 0 && x < BOARD_SIZE - 1 && y < BOARD_SIZE - 1 && desk[x][y] == playerColor && chipCount > 0) {
+            for (var chipIt = 0; chipIt < chipCount; ++chipIt) {
+                desk[copyOfX][copyOfY] = desk[copyOfX][copyOfY] == Chip.WHITE ? Chip.BLACK: Chip.WHITE;
+                copyOfX += vX;
+                copyOfY += vY;
+            }
+        }
+    }
+
+    void placeChipAt(int x, int y){
+        for (var vX = -1; vX < 2; ++vX) {
+            for (var vY = -1; vY < 2; ++vY) {
+                flipChipsInDirection(x, y, vX, vY);
+            }
+        }
+        desk[x][y] = playerColor;
+    }
+
 
     private int chipToPlaceValue(int x, int y) {
         int count = 0;
@@ -148,22 +171,13 @@ public class Board {
                 count += CalculateValueOfDirection(x, y, vX, vY);
             }
         }
-        //TODO
         return count;
     }
 
-    //TODO
     private boolean isChipPlaceableAt(int x, int y) {
         if (x >= BOARD_SIZE || x < 0 || y >= BOARD_SIZE || y < 0) {
             return false;
         }
-//        int count = 0;
-//        for (var vX = -1; vX < 2; ++vX) {
-//            for (var vY = -1; vY < 2; ++vY) {
-//                count += CalculateValueOfDirection(x, y, vX, vY);
-//            }
-//        }
-        //TODO
         return chipToPlaceValue(x, y) > 0;
     }
 
@@ -247,7 +261,19 @@ public class Board {
     }
 
     private void placeBestBotTurn() {
-
+        int bestX = 0;
+        int bestY = 0;
+        int maxPlacementValue = 0;
+        for (var x = 0; x < BOARD_SIZE - 1; ++x) {
+            for (var y = 0; y < BOARD_SIZE - 1; ++y) {
+                if (chipToPlaceValue(x, y) > maxPlacementValue) {
+                    bestX = x;
+                    bestY = y;
+                }
+            }
+        }
+        placeChipAt(bestX, bestY);
+        System.out.printf("Бот ходит %d %d\n", bestX + 1, bestY + 1);
     }
 
     public boolean finishCondition() {
@@ -270,7 +296,4 @@ public class Board {
         opponentsColour = color;
     }
 
-    public void test() {
-        System.out.println(isChipPlaceableAt(2, 2));
-    }
 }

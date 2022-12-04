@@ -66,7 +66,7 @@ public final class Game {
         try {
 
             while (!currentBoard.finishCondition()) {
-                System.out.println("----------------------" + counterForTurns + "\n");
+                System.out.println("--------------------------" + counterForTurns);
 
                 displayScores();
                 displayCurrPlayerTurnStats();
@@ -88,7 +88,10 @@ public final class Game {
             System.out.println(ex.getMessage());
         }
         System.out.println("Игра окончена");
+        currentBoard.displayBoard();
         displayScores();
+        currentPlayer().updateBestScore(currentBoard.calculateScore(currentPlayer().getChipColor()));
+        opponent().updateBestScore(currentBoard.calculateScore(opponent().getChipColor()));
     }
 
     private void setSecondPlayer() {
