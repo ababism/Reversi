@@ -1,6 +1,18 @@
 package com.game.reversi;
 
-public class Player {
-    private String name;
-    Board.Chip chipColor;
+public abstract class Player {
+    private Board.Chip chipColor;
+    private int bestScore = 0;
+
+    public Player(Board.Chip chipColor) {
+        this.chipColor = chipColor;
+    }
+
+    void updateBestScore(final int score) {
+        bestScore = Math.max(score, bestScore);
+    }
+
+    public Board.Chip getChipColor() {
+        return chipColor;
+    }
 }

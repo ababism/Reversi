@@ -1,6 +1,5 @@
 package com.game.reversi;
 
-
 import java.util.Arrays;
 
 public class Board {
@@ -30,7 +29,7 @@ public class Board {
     enum Chip {
         BLACK, WHITE;
 
-        static char chipToChar(Chip chip) {
+        public char chipToChar(Chip chip) {
             if (chip == WHITE) {
                 return '◍';
             } else if (chip == BLACK) {
@@ -73,23 +72,6 @@ public class Board {
 
     }
 
-
-    // сликшом много повторяющего кода
-//    boolean coordinateInRange(int a) {
-//        return a >= 0 && a < BOARD_SIZE;
-//    }
-
-//    boolean chipFlipsLeftRow(int x, int y) {
-//        int it = x - 1;
-//        if (!coordinateInRange(it)) {
-//            return false;
-//        }
-//        while (desk[it][y] == opponentsColour && it > 0) {
-//            --it;
-//        }
-//        return desk[it][y] == playerColor;
-//    }
-
     // Good code
     private boolean checkCoordinates(int x, int y) {
         return x >= 0 && y >= 0 && x < BOARD_SIZE && y < BOARD_SIZE;
@@ -130,13 +112,13 @@ public class Board {
         int chipCount = 0;
         x += vX;
         y += vY;
-        while (x > 0 && y > 0 && x < BOARD_SIZE - 2 && y < BOARD_SIZE - 2  && desk[x][y] == opponentsColour) {
+        while (x > 0 && y > 0 && x < BOARD_SIZE - 2 && y < BOARD_SIZE - 2 && desk[x][y] == opponentsColour) {
             weightCount += countWeightOfInsideChip(x, y);
             x += vX;
             y += vY;
             ++chipCount;
         }
-        if (x >= 0 && y >= 0 && x < BOARD_SIZE - 1 && y < BOARD_SIZE - 1  && desk[x][y] == playerColor && chipCount > 0) {
+        if (x >= 0 && y >= 0 && x < BOARD_SIZE - 1 && y < BOARD_SIZE - 1 && desk[x][y] == playerColor && chipCount > 0) {
             return weightCount;
         } else {
             return 0;
@@ -159,12 +141,6 @@ public class Board {
     }
 
     public void DisplayBoard() {
-//        System.out.println("_________________");
-//        System.out.println("_|1|2|3|4|5|6|7|8|");
-//        for (int i = 0; i < BOARD_SIZE; i++) {
-//            System.out.print(i + 1);
-//            System.out.printf("|%c|%c|%c|%c|%c|%c|%c|%c|\n", Arrays.stream(desk[i]).map(Chip::chipToChar).toArray());
-//        }
         System.out.println("_|1|2|3|4|5|6|7|8|");
         for (int i = 0; i < BOARD_SIZE; ++i) {
             System.out.print(i + 1);
@@ -175,7 +151,7 @@ public class Board {
         }
     }
 
-    public void test(){
+    public void test() {
         System.out.println(isChipPlaceableAt(2, 2));
     }
 }
