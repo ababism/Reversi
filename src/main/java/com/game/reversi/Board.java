@@ -1,6 +1,6 @@
 package com.game.reversi;
 
-import java.util.Arrays;
+import java.util.Scanner;
 
 public class Board {
     final static public int BOARD_SIZE = 8;
@@ -30,6 +30,15 @@ public class Board {
         desk[4][3] = Chip.BLACK;
         desk[3][3] = Chip.WHITE;
         desk[4][4] = Chip.WHITE;
+    }
+
+    public Board(Board other) {
+        for (int i = 0; i < BOARD_SIZE - 1; ++i) {
+            System.arraycopy(other.desk[i], 0, desk[i], 0, BOARD_SIZE - 1);
+            turn = other.turn;
+            playerColor = other.playerColor;
+            opponentsColour = other.opponentsColour;
+        }
     }
 
     enum Chip {
@@ -70,12 +79,11 @@ public class Board {
         }
     }
 
-    void placeChipAt(Chip color, int x, int y) throws IllegalArgumentException {
+    void placeChipAt(int x, int y) throws IllegalArgumentException {
         if (x >= BOARD_SIZE || x < 0 || y >= BOARD_SIZE || y < 0) {
             throw new IllegalArgumentException("Wrong chip coordinates");
         }
-        desk[x][y] = color;
-
+        desk[x][y] = playerColor;
     }
 
     // Good code
@@ -155,6 +163,97 @@ public class Board {
             }
             System.out.print("|\n");
         }
+    }
+
+    // TODO
+    public boolean playerAbleToMakeTurn() {
+        for (var x = 0; x < BOARD_SIZE - 1; ++x) {
+            for (var y = 0; y < BOARD_SIZE - 1; ++y) {
+                if (isChipPlaceableAt(x, y)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Меняет игрока на доске на текущего, обновляет счетких ходов
+     *
+     * @param player
+     * @return
+     * @throws ConcedeException
+     */
+    public boolean makeTurn(Player player) throws ConcedeException {
+        changeColorToPlayer(player);
+        if (!playerAbleToMakeTurn()) {
+            return true;
+        }
+
+        if (player instanceof BotPlayer) {
+            placeBestBotTurn();
+        } else {
+            int x, y;
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("Введите координаты вашего хода (или -1 сдаться; или -2 отменить ход)");
+            x = scanner.nextInt();
+            if (x == -1) {
+                throw new ConcedeException("Player " + player.getName() + '(' + player.getChipColor().chipToChar() + ") conceded");
+            }
+            if (x == -2) {
+                System.out.print("Отмена хода");
+                return false;
+            }
+            y = scanner.nextInt();
+
+            while (!isChipPlaceableAt(x, y)) {
+                System.out.print("Такой ход нельзя сделать, пожалуйста введите кооринаты одной из клеток обозаченных *");
+                System.out.println("Введите координаты вашего хода (или -1 сдаться; или -2 отменить ход)");
+                x = scanner.nextInt();
+                if (x == -1) {
+                    throw new ConcedeException("Player " + player.getName() + '(' + player.getChipColor().chipToChar() + ") conceded");
+                }
+                if (x == -2) {
+                    System.out.print("Отмена хода");
+                    return false;
+                }
+                y = scanner.nextInt();
+            }
+            placeChipAt(x, y);
+        }
+        ++turn;
+        return true;
+    }
+
+    private void changeColorToPlayer(Player player) {
+        if (player.getChipColor() != playerColor) {
+            opponentsColour = playerColor;
+            playerColor = player.getChipColor();
+        }
+    }
+
+    private void placeBestBotTurn() {
+
+    }
+
+    public boolean finishCondition() {
+        if (!playerAbleToMakeTurn()) {
+            swapPlayerColors();
+            if (!playerAbleToMakeTurn()) {
+                swapPlayerColors();
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    private void swapPlayerColors() {
+        Chip color = playerColor;
+        playerColor = opponentsColour;
+        opponentsColour = color;
     }
 
     public void test() {
