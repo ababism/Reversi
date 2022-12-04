@@ -20,8 +20,8 @@ public final class Game {
     }
 
     private void displayBestScores() {
-        System.out.printf("Best scores: %s -- %d | %s -- %d", players[0], players[0].getBestScore(),
-                players[1], players[1].getBestScore());
+        System.out.printf("Best scores: %s_0 -- %d | %s_1 -- %d\n", players[0].getName(), players[0].getBestScore(),
+                players[1].getName(), players[1].getBestScore());
     }
 
     public void menu() {
@@ -52,8 +52,8 @@ public final class Game {
     }
 
     void displayScores() {
-        System.out.printf("Игрок %s (%d): %d", currentPlayer().getName(), currentPlayerIndex(), currentBoard.calculateScore(currentPlayer().getChipColor()));
-        System.out.printf("Игрок %s (%d): %d", opponent().getName(), opponentIndex(), currentBoard.calculateScore(opponent().getChipColor()));
+        System.out.printf("Игрок %s_%d: %d\n", currentPlayer().getName(), currentPlayerIndex(), currentBoard.calculateScore(currentPlayer().getChipColor()));
+        System.out.printf("Игрок %s_%d: %d\n", opponent().getName(), opponentIndex(), currentBoard.calculateScore(opponent().getChipColor()));
     }
 
     private void start() {
@@ -66,9 +66,9 @@ public final class Game {
         try {
 
             while (!currentBoard.finishCondition()) {
+                System.out.println("----------------------\n");
                 displayScores();
                 displayCurrPlayerTurnStats();
-                currentBoard.DisplayBoard();
                 if (!currentBoard.makeTurn(currentPlayer())) {
                     if (counterForTurns >= 2) {
                         boardStack.pop();
@@ -120,6 +120,6 @@ public final class Game {
     }
 
     private void displayCurrPlayerTurnStats() {
-        System.out.printf("Turn %d of %s (%d) (chip color: %c)", currentBoard.getTurn(), currentPlayer().getName(), currentPlayerIndex(), currentPlayer().getChipColor().chipToChar());
+        System.out.printf("Turn %d of %s (%d) (chip color: %c)\n", currentBoard.getTurn(), currentPlayer().getName(), currentPlayerIndex(), currentPlayer().getChipColor().chipToChar());
     }
 }

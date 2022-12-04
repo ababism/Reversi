@@ -83,6 +83,7 @@ public class Board {
         if (x >= BOARD_SIZE || x < 0 || y >= BOARD_SIZE || y < 0) {
             throw new IllegalArgumentException("Wrong chip coordinates");
         }
+
         desk[x][y] = playerColor;
     }
 
@@ -139,11 +140,8 @@ public class Board {
         }
     }
 
-    //TODO
-    private boolean isChipPlaceableAt(int x, int y) {
-        if (x >= BOARD_SIZE || x < 0 || y >= BOARD_SIZE || y < 0) {
-            return false;
-        }
+
+    private int chipToPlaceValue() {
         int count = 0;
         for (var vX = -1; vX < 2; ++vX) {
             for (var vY = -1; vY < 2; ++vY) {
@@ -151,10 +149,24 @@ public class Board {
             }
         }
         //TODO
-        return count > 0;
+        return count;
+    }
+    //TODO
+    private boolean isChipPlaceableAt(int x, int y) {
+        if (x >= BOARD_SIZE || x < 0 || y >= BOARD_SIZE || y < 0) {
+            return false;
+        }
+//        int count = 0;
+//        for (var vX = -1; vX < 2; ++vX) {
+//            for (var vY = -1; vY < 2; ++vY) {
+//                count += CalculateValueOfDirection(x, y, vX, vY);
+//            }
+//        }
+        //TODO
+        return chipToPlaceValue() > 0;
     }
 
-    public void DisplayBoard() {
+    public void displayBoard() {
         System.out.println("_|1|2|3|4|5|6|7|8|");
         for (int i = 0; i < BOARD_SIZE; ++i) {
             System.out.print(i + 1);
@@ -186,6 +198,7 @@ public class Board {
      */
     public boolean makeTurn(Player player) throws ConcedeException {
         changeColorToPlayer(player);
+        displayBoard();
         if (!playerAbleToMakeTurn()) {
             return true;
         }
@@ -196,28 +209,28 @@ public class Board {
             int x, y;
             Scanner scanner = new Scanner(System.in);
             System.out.println("Введите координаты вашего хода (или -1 сдаться; или -2 отменить ход)");
-            x = scanner.nextInt();
-            if (x == -1) {
+            x = scanner.nextInt() - 1;
+            if (x == -2) {
                 throw new ConcedeException("Player " + player.getName() + '(' + player.getChipColor().chipToChar() + ") conceded");
             }
-            if (x == -2) {
+            if (x == -3) {
                 System.out.print("Отмена хода");
                 return false;
             }
-            y = scanner.nextInt();
+            y = scanner.nextInt() - 1;
 
             while (!isChipPlaceableAt(x, y)) {
-                System.out.print("Такой ход нельзя сделать, пожалуйста введите кооринаты одной из клеток обозаченных *");
+                System.out.print("Такой ход нельзя сделать, пожалуйста введите кооринаты одной из клеток обозаченных *\n");
                 System.out.println("Введите координаты вашего хода (или -1 сдаться; или -2 отменить ход)");
-                x = scanner.nextInt();
-                if (x == -1) {
+                x = scanner.nextInt() - 1;
+                if (x == -2) {
                     throw new ConcedeException("Player " + player.getName() + '(' + player.getChipColor().chipToChar() + ") conceded");
                 }
-                if (x == -2) {
-                    System.out.print("Отмена хода");
+                if (x == -3) {
+                    System.out.print("Отмена хода:\n");
                     return false;
                 }
-                y = scanner.nextInt();
+                y = scanner.nextInt() - 1;
             }
             placeChipAt(x, y);
         }
