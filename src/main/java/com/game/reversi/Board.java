@@ -5,12 +5,22 @@ import java.util.Arrays;
 
 public class Board {
     final static public int BOARD_SIZE = 8;
+    // Веса клеток которые мы зажимаем
+    final static public int SE = 20;
+    final static public int SI = 10;
+    // Веса клетки на которую мы ставим фишку
+    final static public int SSC = 8;
+    final static public int SSE = 4;
+    final static public int SSI = 0;
+
     private Chip playerColor;
     private Chip opponentsColour;
 
     private final Chip[][] desk = new Chip[BOARD_SIZE][BOARD_SIZE];
 
     public Board() {
+        playerColor = Chip.BLACK;
+        opponentsColour = Chip.WHITE;
         desk[3][4] = Chip.BLACK;
         desk[4][3] = Chip.BLACK;
         desk[3][3] = Chip.WHITE;
@@ -43,12 +53,14 @@ public class Board {
         return count;
     }
 
-    private static char chipToChar(Chip chip, int x, int y) {
+    private char chipToChar(Chip chip, int x, int y) {
         if (chip == Chip.WHITE) {
             return '◍';
         } else if (chip == Chip.BLACK) {
             return '◯';
-        } else if (chip == null &&) {
+        } else if (chip == null && isChipPlaceableAt(x, y)) {
+            return '*';
+        } else {
             return '_';
         }
     }
@@ -61,89 +73,109 @@ public class Board {
 
     }
 
+
+    // сликшом много повторяющего кода
+//    boolean coordinateInRange(int a) {
+//        return a >= 0 && a < BOARD_SIZE;
+//    }
+
+//    boolean chipFlipsLeftRow(int x, int y) {
+//        int it = x - 1;
+//        if (!coordinateInRange(it)) {
+//            return false;
+//        }
+//        while (desk[it][y] == opponentsColour && it > 0) {
+//            --it;
+//        }
+//        return desk[it][y] == playerColor;
+//    }
+
+    // Good code
+    private boolean checkCoordinates(int x, int y) {
+        return x >= 0 && y >= 0 && x < BOARD_SIZE && y < BOARD_SIZE;
+    }
+
+    private int countWeightOfInsideChip(final int x, final int y) {
+        if (x == 0 || y == 0 || x == BOARD_SIZE - 1 || y == BOARD_SIZE - 1) {
+            return SE;
+        } else {
+            return SI;
+        }
+    }
+
+    private int countWeightOfChipPlaced(final int x, final int y) {
+        if (!checkCoordinates(x, y)) {
+            return 0;
+        }
+
+        if ((x == 0 && y == 0) || (x == BOARD_SIZE - 1 && y == BOARD_SIZE - 1)
+                || (x == 0 && y == BOARD_SIZE - 1) || (x == BOARD_SIZE - 1 && y == 0)) {
+            return SSC;
+        } else if (x == 0 || y == 0 || x == BOARD_SIZE - 1 || y == BOARD_SIZE - 1) {
+            return SSE;
+        } else {
+            return SSI;
+        }
+    }
+
+    private int CalculateValueOfDirection(int x, int y, int vX, int vY) {
+        //        if (!coordinateInRange(x) || !coordinateInRange(y)) {
+        //            return 0;
+        //        }
+        // TODO проверка на норм вектор
+        if (!checkCoordinates(x, y) || (vX == 0 && vY == 0) || desk[x][y] != null) {
+            return 0;
+        }
+        int weightCount = countWeightOfChipPlaced(x, y);
+        int chipCount = 0;
+        x += vX;
+        y += vY;
+        while (x > 0 && y > 0 && x < BOARD_SIZE - 2 && y < BOARD_SIZE - 2  && desk[x][y] == opponentsColour) {
+            weightCount += countWeightOfInsideChip(x, y);
+            x += vX;
+            y += vY;
+            ++chipCount;
+        }
+        if (x >= 0 && y >= 0 && x < BOARD_SIZE - 1 && y < BOARD_SIZE - 1  && desk[x][y] == playerColor && chipCount > 0) {
+            return weightCount;
+        } else {
+            return 0;
+        }
+    }
+
     //TODO
-    boolean isChipPlaceableAt(int x, int y) {
+    private boolean isChipPlaceableAt(int x, int y) {
         if (x >= BOARD_SIZE || x < 0 || y >= BOARD_SIZE || y < 0) {
             return false;
         }
-        for (var i = x + 1; i < x; ++i) {
-            if (desk[x][i] == playerColor) {
-
+        int count = 0;
+        for (var vX = -1; vX < 2; ++vX) {
+            for (var vY = -1; vY < 2; ++vY) {
+                count += CalculateValueOfDirection(x, y, vX, vY);
             }
         }
-        if
         //TODO
-        return false;
-    }
-    // сликшом много повторяющего кода
-    boolean coordinateInRange(int a) {
-        return a >= 0 && a < BOARD_SIZE;
+        return count > 0;
     }
 
-    boolean chipFlipsLeftRow(int x, int y) {
-        int it = x - 1;
-        if (!coordinateInRange(it)) {
-            return false;
-        }
-        while (desk[it][y] == opponentsColour && it > 0) {
-            --it;
-        }
-        return desk[it][y] == playerColor;
-    }
-
-    boolean chipFlipsRightRow(int x, int y) {
-        int it = x + 1;
-        if (!coordinateInRange(it)) {
-            return false;
-        }
-        while (desk[it][y] == opponentsColour && it < BOARD_SIZE - 2) {
-            ++it;
-        }
-        return desk[it][y] == playerColor;
-    }
-
-    boolean chipFlipsUpColumn(int x, int y) {
-        int it = y - 1;
-        if (!coordinateInRange(it)) {
-            return false;
-        }
-        while (desk[x][it] == opponentsColour && it > 0) {
-            --it;
-        }
-        return desk[x][it] == playerColor;
-    }
-
-    boolean chipFlipsBottomColumn(int x, int y) {
-        int it = y + 1;
-        if (!coordinateInRange(it)) {
-            return false;
-        }
-        while (desk[x][it] == opponentsColour && it < BOARD_SIZE - 2) {
-            --it;
-        }
-        return desk[x][it] == playerColor;
-    }
-
-    boolean chipFlipsFirstDiagonal(int x, int y) {
-        int it = y - 1;
-        if (!coordinateInRange(it)) {
-            return false;
-        }
-        while (desk[x][it] == opponentsColour && it > 0) {
-            --it;
-        }
-        return desk[x][it] == playerColor;
-    }
     public void DisplayBoard() {
 //        System.out.println("_________________");
-        System.out.println("_|1|2|3|4|5|6|7|8|");
-        for (int i = 0; i < 8; i++) {
-            System.out.print(i + 1);
-            System.out.printf("|%c|%c|%c|%c|%c|%c|%c|%c|\n", Arrays.stream(desk[i]).map(Chip::chipToChar).toArray());
-        }
-//        for (var chipArr : desk) {
-//            System.out.printf("|%c|%c|%c|%c|%c|%c|%c|%c|\n", Arrays.stream(chipArr).map(Chip::chipToChar).toArray());
+//        System.out.println("_|1|2|3|4|5|6|7|8|");
+//        for (int i = 0; i < BOARD_SIZE; i++) {
+//            System.out.print(i + 1);
+//            System.out.printf("|%c|%c|%c|%c|%c|%c|%c|%c|\n", Arrays.stream(desk[i]).map(Chip::chipToChar).toArray());
 //        }
-        //  System.out.printf(BOARD_FORMAT, Arrays.stream(desk).map(i -> Arrays.stream(i).map(Chip::chipToChar)));
+        System.out.println("_|1|2|3|4|5|6|7|8|");
+        for (int i = 0; i < BOARD_SIZE; ++i) {
+            System.out.print(i + 1);
+            for (int j = 0; j < BOARD_SIZE; ++j) {
+                System.out.printf("|%c", chipToChar(desk[i][j], i, j));
+            }
+            System.out.print("|\n");
+        }
+    }
+
+    public void test(){
+        System.out.println(isChipPlaceableAt(2, 2));
     }
 }

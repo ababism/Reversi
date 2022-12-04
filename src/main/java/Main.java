@@ -7,6 +7,7 @@ public class Main {
 
         Game game = new Game();
         Board board = new Board();
+        board.test();
         board.DisplayBoard();
     }
 }
