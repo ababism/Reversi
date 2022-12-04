@@ -14,10 +14,16 @@ public class Board {
 
     private Chip playerColor;
     private Chip opponentsColour;
+    private int turn;
 
     private final Chip[][] desk = new Chip[BOARD_SIZE][BOARD_SIZE];
 
+    public int getTurn() {
+        return turn;
+    }
+
     public Board() {
+        turn = 1;
         playerColor = Chip.BLACK;
         opponentsColour = Chip.WHITE;
         desk[3][4] = Chip.BLACK;
@@ -29,10 +35,10 @@ public class Board {
     enum Chip {
         BLACK, WHITE;
 
-        public char chipToChar(Chip chip) {
-            if (chip == WHITE) {
+        public char chipToChar() {
+            if (this == WHITE) {
                 return '◍';
-            } else if (chip == BLACK) {
+            } else if (this == BLACK) {
                 return '◯';
             } else {
                 return '_';

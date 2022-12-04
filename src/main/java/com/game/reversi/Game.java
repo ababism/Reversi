@@ -4,19 +4,32 @@ import java.util.Scanner;
 
 public final class Game {
 
+    private Board currentBoard;
+    private Board prevBoard;
+
     //    int bestScore;
-    int counterForTurns = 0;
+    private int counterForTurns = 1;
+    private boolean isGameGoing;
     Player[] players = new Player[2];
 
     public Game() {
-    players[0] = new HumanPlayer(Board.Chip.BLACK);
-    setSecondPlayer();
+        players[0] = new HumanPlayer(Board.Chip.BLACK);
+        setSecondPlayer();
+        currentBoard = new Board();
+        System.out.println("Игра \"Реверси\"!");
+
     }
 
-    static public void Start() {
+    private void menu() {
+
     }
 
-    static public void config() {
+    public void start() {
+        while (isGameGoing) {
+            isGameGoing = turn();
+        }
+        System.out.println("Игра окончена");
+        System.out.printf("Победил игрок %s (%d)", players[currentPlayerIndex()].getName(), currentPlayerIndex());
 
     }
 
@@ -34,6 +47,18 @@ public final class Game {
         }
     }
 
-    private void turn() {
+
+    private int currentPlayerIndex() {
+        return counterForTurns % 2;
+    }
+
+    private void displayStats() {
+        System.out.printf("Turn %d of %s (%d) (chip color: %c)", currentBoard.getTurn(), players[currentPlayerIndex()].getName(), currentPlayerIndex(), players[currentPlayerIndex()].getChipColor().chipToChar());
+    }
+    private boolean turn() {
+        counterForTurns += 1;
+        currentBoard.DisplayBoard();
+        prevBoard = currentBoard;
+        players[currentPlayerIndex()].makeTurn(currentBoard);
     }
 }
