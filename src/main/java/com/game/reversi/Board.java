@@ -177,7 +177,7 @@ public class Board {
      * @param vY координата нормального единичного вектора
      * @return Вес замены, 0 если нельзя совершить ход (не будет ни одного переворота)
      */
-    private int CalculateValueOfDirection(int x, int y, int vX, int vY) {
+    private int calculateValueOfDirection(int x, int y, int vX, int vY) {
         if (!checkCoordinates(x, y) || (vX == 0 && vY == 0) || desk[x][y] != null) {
             return 0;
         }
@@ -257,7 +257,7 @@ public class Board {
         int count = 0;
         for (var vX = -1; vX < 2; ++vX) {
             for (var vY = -1; vY < 2; ++vY) {
-                count += CalculateValueOfDirection(x, y, vX, vY);
+                count += calculateValueOfDirection(x, y, vX, vY);
             }
         }
         return count;
