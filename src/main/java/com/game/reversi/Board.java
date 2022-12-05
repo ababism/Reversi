@@ -33,12 +33,12 @@ public class Board {
     }
 
     public Board(Board other) {
-        for (int i = 0; i < BOARD_SIZE - 1; ++i) {
-            System.arraycopy(other.desk[i], 0, desk[i], 0, BOARD_SIZE - 1);
-            turn = other.turn;
-            playerColor = other.playerColor;
-            opponentsColour = other.opponentsColour;
+        for (int i = 0; i < BOARD_SIZE; ++i) {
+            System.arraycopy(other.desk[i], 0, desk[i], 0, BOARD_SIZE);
         }
+        turn = other.turn;
+        playerColor = other.playerColor;
+        opponentsColour = other.opponentsColour;
     }
 
     enum Chip {
@@ -141,7 +141,7 @@ public class Board {
     }
 
 
-    private int chipToPlaceValue() {
+    private int chipToPlaceValue(int x, int y) {
         int count = 0;
         for (var vX = -1; vX < 2; ++vX) {
             for (var vY = -1; vY < 2; ++vY) {
@@ -151,6 +151,7 @@ public class Board {
         //TODO
         return count;
     }
+
     //TODO
     private boolean isChipPlaceableAt(int x, int y) {
         if (x >= BOARD_SIZE || x < 0 || y >= BOARD_SIZE || y < 0) {
@@ -163,7 +164,7 @@ public class Board {
 //            }
 //        }
         //TODO
-        return chipToPlaceValue() > 0;
+        return chipToPlaceValue(x, y) > 0;
     }
 
     public void displayBoard() {
@@ -214,7 +215,7 @@ public class Board {
                 throw new ConcedeException("Player " + player.getName() + '(' + player.getChipColor().chipToChar() + ") conceded");
             }
             if (x == -3) {
-                System.out.print("Отмена хода");
+                System.out.print("Отмена хода\n");
                 return false;
             }
             y = scanner.nextInt() - 1;

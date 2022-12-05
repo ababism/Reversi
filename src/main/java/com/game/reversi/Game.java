@@ -15,7 +15,7 @@ public final class Game {
         setSecondPlayer();
         currentBoard = new Board();
         boardStack = new Stack<>();
-        boardStack.add(currentBoard);
+        boardStack.push(new Board(currentBoard));
         System.out.println("Игра \"Реверси\"!");
     }
 
@@ -51,7 +51,7 @@ public final class Game {
         }
     }
 
-    void displayScores() {
+    private void displayScores() {
         System.out.printf("Игрок %s_%d: %d\n", currentPlayer().getName(), currentPlayerIndex(), currentBoard.calculateScore(currentPlayer().getChipColor()));
         System.out.printf("Игрок %s_%d: %d\n", opponent().getName(), opponentIndex(), currentBoard.calculateScore(opponent().getChipColor()));
     }
@@ -61,25 +61,27 @@ public final class Game {
         counterForTurns = 0;
         currentBoard = new Board();
         boardStack = new Stack<>();
-        boardStack.add(currentBoard);
+        boardStack.push(new Board(currentBoard));
         System.out.println("Игра началась");
         try {
 
             while (!currentBoard.finishCondition()) {
-                System.out.println("----------------------\n");
+                System.out.println("----------------------" + counterForTurns + "\n");
+
                 displayScores();
                 displayCurrPlayerTurnStats();
                 if (!currentBoard.makeTurn(currentPlayer())) {
                     if (counterForTurns >= 2) {
                         boardStack.pop();
-                        currentBoard = boardStack.pop();
+                        boardStack.pop();
+                        currentBoard = new Board(boardStack.peek());
                         counterForTurns -= 2;
                     } else {
                         System.out.println("Нельзя отменить ход!");
                     }
                 } else {
                     ++counterForTurns;
-                    boardStack.add(currentBoard);
+                    boardStack.push(new Board(currentBoard));
                 }
             }
         } catch (ConcedeException ex) {
