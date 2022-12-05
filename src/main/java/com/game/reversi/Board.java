@@ -2,8 +2,18 @@ package com.game.reversi;
 
 import java.util.Scanner;
 
+/**
+ * Класс доски, реализует все операции с ней, также содержит enum Chip
+ */
 public class Board {
+    /**
+     * Заведем константы (почти все будут нужны нам только внутри класса)
+     * Это хорошая практика, чтобы внутри кода не было "волшебных" цифр
+     */
     final static public int BOARD_SIZE = 8;
+    /**
+     * Веса для ИИ, соотношение весов сохранено согласно примеру
+     */
     // Веса клеток которые мы зажимаем
     final static private int SE = 20;
     final static private int SI = 10;
@@ -14,6 +24,9 @@ public class Board {
 
     private Chip playerColor;
     private Chip opponentsColour;
+    /**
+     * Физический ход
+     */
     private int turn;
 
     private final Chip[][] desk = new Chip[BOARD_SIZE][BOARD_SIZE];
@@ -22,6 +35,9 @@ public class Board {
         return turn;
     }
 
+    /**
+     * Консркутор согласно правилам игры
+     */
     public Board() {
         turn = 1;
         playerColor = Chip.BLACK;
@@ -32,6 +48,11 @@ public class Board {
         desk[4][4] = Chip.WHITE;
     }
 
+    /**
+     * Констркуктор копирования
+     *
+     * @param other доска, которую мы хотим скопировать
+     */
     public Board(Board other) {
         for (int i = 0; i < BOARD_SIZE; ++i) {
             System.arraycopy(other.desk[i], 0, desk[i], 0, BOARD_SIZE);
@@ -41,6 +62,10 @@ public class Board {
         opponentsColour = other.opponentsColour;
     }
 
+    /**
+     * Наша фишка, почти везде удобно называть ее цветом, так как фишка принимает только значения ее цвета
+     * Chip == null обозначает, что фишки нет, что логично
+     */
     enum Chip {
         BLACK, WHITE;
 
@@ -55,6 +80,12 @@ public class Board {
         }
     }
 
+    /**
+     * Считает количество фишек на поле
+     *
+     * @param colour цвет фишек
+     * @return колиство фишек данного цвета
+     */
     public int calculateScore(Chip colour) {
         int count = 0;
         for (var chipArr : desk) {
@@ -67,6 +98,14 @@ public class Board {
         return count;
     }
 
+    /**
+     * Переводит фишку в символ
+     *
+     * @param chip фишка
+     * @param x    координата на доске
+     * @param y    координата на доске
+     * @return симвон, обозначающий фишку или ее отсутсвие
+     */
     private char chipToChar(Chip chip, int x, int y) {
         if (chip == Chip.WHITE) {
             return '◍';
@@ -80,11 +119,24 @@ public class Board {
     }
 
 
-    // Good code
+    /**
+     * Проверяет координаты на корректность
+     *
+     * @param x координата на доске
+     * @param y координата на доске
+     * @return Кореектны ли координаты
+     */
     private boolean checkCoordinates(int x, int y) {
         return x >= 0 && y >= 0 && x < BOARD_SIZE && y < BOARD_SIZE;
     }
 
+    /**
+     * Считает вес замещения зажатой фишки для ИИ
+     *
+     * @param x координата на фишки
+     * @param y координата на фишки
+     * @return вес фишки
+     */
     private int countWeightOfInsideChip(final int x, final int y) {
         if (x == 0 || y == 0 || x == BOARD_SIZE - 1 || y == BOARD_SIZE - 1) {
             return SE;
@@ -93,6 +145,13 @@ public class Board {
         }
     }
 
+    /**
+     * Считает вес поставленной фишки для ИИ
+     *
+     * @param x координата на фишки
+     * @param y координата на фишки
+     * @return вес фишки
+     */
     private int countWeightOfChipPlaced(final int x, final int y) {
         if (!checkCoordinates(x, y)) {
             return 0;
@@ -108,11 +167,23 @@ public class Board {
         }
     }
 
+    /**
+     * Считает вес фишек, которые можно заменить по направлению заданным нормальным единичным вектором
+     * от фишки которую поставят
+     *
+     * @param x  координата на фишки которую поставят
+     * @param y  координата на фишки которую поставят
+     * @param vX координата нормального единичного вектора
+     * @param vY координата нормального единичного вектора
+     * @return Вес замены, 0 если нельзя совершить ход (не будет ни одного переворота)
+     */
     private int CalculateValueOfDirection(int x, int y, int vX, int vY) {
         if (!checkCoordinates(x, y) || (vX == 0 && vY == 0) || desk[x][y] != null) {
             return 0;
         }
-        int weightCount = countWeightOfChipPlaced(x, y);
+//        int weightCount = countWeightOfChipPlaced(x, y);
+        int weightCount = 0;
+
         int chipCount = 0;
         x += vX;
         y += vY;
@@ -129,6 +200,14 @@ public class Board {
         }
     }
 
+    /**
+     * Переворачивает все потенциально зажатые фишки по напрвелению заданным нормальным единичным вектором
+     *
+     * @param x  координата на фишки которую поставят
+     * @param y  координата на фишки которую поставят
+     * @param vX координата нормального единичного вектора
+     * @param vY координата нормального единичного вектора
+     */
     private void flipChipsInDirection(int x, int y, int vX, int vY) {
         if (!checkCoordinates(x, y) || (vX == 0 && vY == 0) || desk[x][y] != null) {
             return;
@@ -152,6 +231,12 @@ public class Board {
         }
     }
 
+    /**
+     * Ставит фишку на опредленное место согласно правилам
+     *
+     * @param x координата фишки
+     * @param y координата фишки
+     */
     private void placeChipAt(int x, int y) {
         for (var vX = -1; vX < 2; ++vX) {
             for (var vY = -1; vY < 2; ++vY) {
@@ -161,7 +246,13 @@ public class Board {
         desk[x][y] = playerColor;
     }
 
-
+    /**
+     * Считает вес хода, где ставят фишку (т.е. сумма весов заменяемых)
+     *
+     * @param x координата фишки
+     * @param y координата фишки
+     * @return вес фишки
+     */
     private int chipToPlaceValue(int x, int y) {
         int count = 0;
         for (var vX = -1; vX < 2; ++vX) {
@@ -172,6 +263,13 @@ public class Board {
         return count;
     }
 
+    /**
+     * Можно ли поставить фишку
+     *
+     * @param x координата фишки
+     * @param y координата фишки
+     * @return Можно ли поставить фишку
+     */
     private boolean isChipPlaceableAt(int x, int y) {
         if (x >= BOARD_SIZE || x < 0 || y >= BOARD_SIZE || y < 0) {
             return false;
@@ -179,6 +277,9 @@ public class Board {
         return chipToPlaceValue(x, y) > 0;
     }
 
+    /**
+     * Отрисовывает доску
+     */
     public void displayBoard() {
         System.out.println("_|1|2|3|4|5|6|7|8|");
         for (int i = 0; i < BOARD_SIZE; ++i) {
@@ -190,7 +291,11 @@ public class Board {
         }
     }
 
-
+    /**
+     * Может ли хоядщий игрок сделать ход
+     *
+     * @return Может ли хоядщий игрок сделать ход
+     */
     public boolean playerAbleToMakeTurn() {
         for (var x = 0; x < BOARD_SIZE - 1; ++x) {
             for (var y = 0; y < BOARD_SIZE - 1; ++y) {
@@ -251,6 +356,11 @@ public class Board {
         return true;
     }
 
+    /**
+     * Поменять цвет на цвет ирогка если надо
+     *
+     * @param player цвет игрока, чей цвеь нужно выбьрать
+     */
     private void changeColorToPlayer(Player player) {
         if (player.getChipColor() != playerColor) {
             opponentsColour = playerColor;
@@ -258,25 +368,32 @@ public class Board {
         }
     }
 
+    /**
+     * ИИ сравнивает веса всевозможных ходов ставит фишку в наилучшиую позицию
+     */
     private void placeBestBotTurn() {
         int bestX = 0;
         int bestY = 0;
         int maxPlacementValue = 0;
         for (var x = 0; x < BOARD_SIZE - 1; ++x) {
             for (var y = 0; y < BOARD_SIZE - 1; ++y) {
-                if (chipToPlaceValue(x, y) > maxPlacementValue) {
-                    maxPlacementValue = chipToPlaceValue(x, y);
+                if (chipToPlaceValue(x, y) + countWeightOfChipPlaced(x, y) > maxPlacementValue) {
+                    maxPlacementValue = chipToPlaceValue(x, y) + countWeightOfChipPlaced(x, y);
                     bestX = x;
                     bestY = y;
                 }
             }
         }
-//        System.out.printf("Бот value %d\n", chipToPlaceValue(bestX, bestY));
         placeChipAt(bestX, bestY);
         System.out.printf("Бот ходит %d %d\n", bestX + 1, bestY + 1);
 
     }
 
+    /**
+     * Условие заверщения игры
+     *
+     * @return завершена ли игра
+     */
     public boolean finishCondition() {
         if (!playerAbleToMakeTurn()) {
             swapPlayerColors();
@@ -291,6 +408,9 @@ public class Board {
         }
     }
 
+    /**
+     * Меняет местами цвета игроков
+     */
     private void swapPlayerColors() {
         Chip color = playerColor;
         playerColor = opponentsColour;
