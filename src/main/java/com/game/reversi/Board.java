@@ -267,13 +267,16 @@ public class Board {
         for (var x = 0; x < BOARD_SIZE - 1; ++x) {
             for (var y = 0; y < BOARD_SIZE - 1; ++y) {
                 if (chipToPlaceValue(x, y) > maxPlacementValue) {
+                    maxPlacementValue = chipToPlaceValue(x, y);
                     bestX = x;
                     bestY = y;
                 }
             }
         }
+        System.out.printf("Бот value %d\n", chipToPlaceValue(bestX, bestY));
         placeChipAt(bestX, bestY);
         System.out.printf("Бот ходит %d %d\n", bestX + 1, bestY + 1);
+
     }
 
     public boolean finishCondition() {
@@ -295,5 +298,4 @@ public class Board {
         playerColor = opponentsColour;
         opponentsColour = color;
     }
-
 }

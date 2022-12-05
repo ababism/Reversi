@@ -127,4 +127,5 @@ public final class Game {
     private void displayCurrPlayerTurnStats() {
         System.out.printf("Turn %d of %s (%d) (chip color: %c)\n", currentBoard.getTurn(), currentPlayer().getName(), currentPlayerIndex(), currentPlayer().getChipColor().chipToChar());
     }
+
 }

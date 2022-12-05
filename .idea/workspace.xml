@@ -67,7 +67,7 @@
       <option name="presentableId" value="Default" />
       <updated>1669829358833</updated>
       <workItem from="1669829360984" duration="56944000" />
-      <workItem from="1670193488771" duration="3889000" />
+      <workItem from="1670193488771" duration="5091000" />
     </task>
     <servers />
   </component>
@@ -84,5 +84,16 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/game/reversi/Board.java</url>
+          <line>221</line>
+          <option name="timeStamp" value="26" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
