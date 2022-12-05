@@ -5,12 +5,12 @@ import java.util.Scanner;
 public class Board {
     final static public int BOARD_SIZE = 8;
     // Веса клеток которые мы зажимаем
-    final static public int SE = 20;
-    final static public int SI = 10;
+    final static private int SE = 20;
+    final static private int SI = 10;
     // Веса клетки на которую мы ставим фишку
-    final static public int SSC = 8;
-    final static public int SSE = 4;
-    final static public int SSI = 0;
+    final static private int SSC = 8;
+    final static private int SSE = 4;
+    final static private int SSI = 0;
 
     private Chip playerColor;
     private Chip opponentsColour;
@@ -55,7 +55,7 @@ public class Board {
         }
     }
 
-    int calculateScore(Chip colour) {
+    public int calculateScore(Chip colour) {
         int count = 0;
         for (var chipArr : desk) {
             for (var chip : chipArr) {
@@ -109,7 +109,6 @@ public class Board {
     }
 
     private int CalculateValueOfDirection(int x, int y, int vX, int vY) {
-        // TODO проверка на норм вектор
         if (!checkCoordinates(x, y) || (vX == 0 && vY == 0) || desk[x][y] != null) {
             return 0;
         }
@@ -131,7 +130,6 @@ public class Board {
     }
 
     private void flipChipsInDirection(int x, int y, int vX, int vY) {
-        // TODO проверка на норм вектор
         if (!checkCoordinates(x, y) || (vX == 0 && vY == 0) || desk[x][y] != null) {
             return;
         }
@@ -147,14 +145,14 @@ public class Board {
         }
         if (x >= 0 && y >= 0 && x < BOARD_SIZE - 1 && y < BOARD_SIZE - 1 && desk[x][y] == playerColor && chipCount > 0) {
             for (var chipIt = 0; chipIt < chipCount; ++chipIt) {
-                desk[copyOfX][copyOfY] = desk[copyOfX][copyOfY] == Chip.WHITE ? Chip.BLACK: Chip.WHITE;
+                desk[copyOfX][copyOfY] = desk[copyOfX][copyOfY] == Chip.WHITE ? Chip.BLACK : Chip.WHITE;
                 copyOfX += vX;
                 copyOfY += vY;
             }
         }
     }
 
-    void placeChipAt(int x, int y){
+    private void placeChipAt(int x, int y) {
         for (var vX = -1; vX < 2; ++vX) {
             for (var vY = -1; vY < 2; ++vY) {
                 flipChipsInDirection(x, y, vX, vY);
@@ -192,7 +190,7 @@ public class Board {
         }
     }
 
-    // TODO
+
     public boolean playerAbleToMakeTurn() {
         for (var x = 0; x < BOARD_SIZE - 1; ++x) {
             for (var y = 0; y < BOARD_SIZE - 1; ++y) {
@@ -207,9 +205,9 @@ public class Board {
     /**
      * Меняет игрока на доске на текущего, обновляет счетких ходов
      *
-     * @param player
-     * @return
-     * @throws ConcedeException
+     * @param player игрок совершающий ход
+     * @return Не был ли ход отменен
+     * @throws ConcedeException Исключение, когда кто-то сдался
      */
     public boolean makeTurn(Player player) throws ConcedeException {
         changeColorToPlayer(player);
@@ -273,7 +271,7 @@ public class Board {
                 }
             }
         }
-        System.out.printf("Бот value %d\n", chipToPlaceValue(bestX, bestY));
+//        System.out.printf("Бот value %d\n", chipToPlaceValue(bestX, bestY));
         placeChipAt(bestX, bestY);
         System.out.printf("Бот ходит %d %d\n", bestX + 1, bestY + 1);
 

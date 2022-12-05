@@ -12,8 +12,4 @@ public class BotPlayer extends Player {
         super(chipColor);
     }
 
-    @Override
-    public boolean makeTurn(Board board) {
-        return false;
-    }
 }

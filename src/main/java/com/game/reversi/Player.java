@@ -1,8 +1,9 @@
 package com.game.reversi;
 
 public abstract class Player {
-    private Board.Chip chipColor;
+    private final Board.Chip chipColor;
     private int bestScore = 0;
+
     abstract String getName();
 
     public Player(Board.Chip chipColor) {
@@ -21,11 +22,4 @@ public abstract class Player {
         return chipColor;
     }
 
-    public abstract boolean makeTurn(Board board);
-    // TODO maybe remove
-    public static void SwapColors(Player player1, Player player2) {
-        Board.Chip temp = player1.chipColor;
-        player1.chipColor = player2.chipColor;
-        player2.chipColor = temp;
-    }
 }

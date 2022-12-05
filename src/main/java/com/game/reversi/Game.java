@@ -49,6 +49,7 @@ public final class Game {
                     break;
             }
         }
+        System.out.println("Спасибо за игру!");
     }
 
     private void displayScores() {
@@ -57,7 +58,6 @@ public final class Game {
     }
 
     private void start() {
-        // TODO reset board
         counterForTurns = 0;
         currentBoard = new Board();
         boardStack = new Stack<>();
