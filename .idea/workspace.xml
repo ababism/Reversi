@@ -5,11 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bcf89454-f6b1-4416-95b9-cea1355c606b" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/game/reversi/BoardTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/game/reversi/BotPlayerTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/game/reversi/HumanPlayerTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/game/reversi/PlayerTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/reversi/Board.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/reversi/Board.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/reversi/ConcedeException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/reversi/ConcedeException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/reversi/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/reversi/Game.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/reversi/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/reversi/Player.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,6 +22,7 @@
       <list>
         <option value="Interface" />
         <option value="Class" />
+        <option value="JUnit5 Test Class" />
       </list>
     </option>
   </component>
@@ -38,20 +40,31 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="" />
     </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="com.game.reversi" />
+    </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="JUnit.com.game.reversi in Reversi">
     <configuration name="Unnamed" type="Application" factoryName="Application" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="Reversi" />
@@ -59,6 +72,74 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="BoardTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Reversi" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.game.reversi.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.game.reversi" />
+      <option name="MAIN_CLASS_NAME" value="com.game.reversi.BoardTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PlayerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Reversi" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.game.reversi.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.game.reversi" />
+      <option name="MAIN_CLASS_NAME" value="com.game.reversi.PlayerTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PlayerTest.getBestScore" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Reversi" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.game.reversi.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.game.reversi" />
+      <option name="MAIN_CLASS_NAME" value="com.game.reversi.PlayerTest" />
+      <option name="METHOD_NAME" value="getBestScore" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="com.game.reversi in Reversi" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Reversi" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.game.reversi.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.game.reversi" />
+      <option name="TEST_OBJECT" value="package" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.com.game.reversi in Reversi" />
+        <item itemvalue="JUnit.PlayerTest" />
+        <item itemvalue="JUnit.PlayerTest.getBestScore" />
+        <item itemvalue="JUnit.BoardTest" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -69,7 +150,9 @@
       <option name="presentableId" value="Default" />
       <updated>1669829358833</updated>
       <workItem from="1669829360984" duration="56944000" />
-      <workItem from="1670193488771" duration="9097000" />
+      <workItem from="1670193488771" duration="9798000" />
+      <workItem from="1672229333815" duration="783000" />
+      <workItem from="1674505520099" duration="7540000" />
     </task>
     <servers />
   </component>
@@ -86,5 +169,14 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/Reversi$BoardTest.ic" NAME="BoardTest Coverage Results" MODIFIED="1674511246697" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>com.game.reversi.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/Reversi$Unnamed.ic" NAME="Unnamed Coverage Results" MODIFIED="1674506654614" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/Reversi$PlayerTest.ic" NAME="PlayerTest Coverage Results" MODIFIED="1674513317748" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>com.game.reversi.*</FILTER>
+    </SUITE>
   </component>
 </project>
